@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Chatbot</title>
+	<link rel="icon" href="./Assets/bot-mini.png" />
+	<link rel="stylesheet" href="./Css/style.css" />
+	<!-- Add Lottie Library -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.7.4/lottie.min.js"></script>
+</head>
+
+<body>
+
+	<header>
+		<nav>
+			<h1>{ Social Media Analyzer }</h1>
+		</nav>
+	</header>
+
+	<div id="container" class="container">
+		<div id="chat" class="chat">
+			<div id="messages" class="messages"></div>
+			<input id="input" type="text" placeholder="Say something..." autocomplete="off" autofocus="true" />
+		</div>
+		<!-- Replace image with a div for Lottie animation -->
+		<div id="lottie-container" class="lottie-container"></div>
+	</div>
+
+	<script type="text/javascript" src="./Js/index.js"></script>
+	<script type="text/javascript" src="./Js/constants.js"></script>
+	<script type="text/javascript" src="./Js/speech.js"></script>
+	
+	<script>
+		// Load the Lottie animation
+		var animation = lottie.loadAnimation({
+			container: document.getElementById('lottie-container'), // The container for the animation
+			renderer: 'svg', // Renderer type: SVG, Canvas, or HTML
+			loop: true, // Loop the animation
+			autoplay: true, // Start playing immediately
+			path: './Assets/bot.json' // Path to the Lottie JSON animation file
+		});
+	</script>
+
+</body>
+
+</html>
