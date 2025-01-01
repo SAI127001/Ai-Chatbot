@@ -1,5 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
   const inputField = document.getElementById("input");
+  const sendButton = document.getElementById("sendButton");
+
+  // Trigger output when Enter key is pressed
   inputField.addEventListener("keydown", (e) => {
     if (e.code === "Enter") {
       let input = inputField.value;
@@ -7,19 +10,22 @@ document.addEventListener("DOMContentLoaded", () => {
       output(input);
     }
   });
+
+  // Trigger output when Send button is clicked
+  sendButton.addEventListener("click", () => {
+    let input = inputField.value;
+    inputField.value = "";
+    output(input);
+  });
 });
 
 function output(input) {
   let product;
 
-  // Regex remove non word/space chars
-  // Trim trailing whitespce
-  // Remove digits - not sure if this is best
-  // But solves problem of entering something like 'hi1'
-
+  // Clean and process the input
   let text = input.toLowerCase().replace(/[^\w\s]/gi, "").replace(/[\d]/gi, "").trim();
   text = text
-    .replace(/ a /g, " ")   // 'tell me a story' -> 'tell me story'
+    .replace(/ a /g, " ")
     .replace(/i feel /g, "")
     .replace(/whats/g, "what is")
     .replace(/please /g, "")
@@ -27,19 +33,16 @@ function output(input) {
     .replace(/r u/g, "are you");
 
   if (compare(prompts, replies, text)) { 
-    // Search for exact match in `prompts`
     product = compare(prompts, replies, text);
   } else if (text.match(/thank/gi)) {
-    product = "You're welcome!"
+    product = "You're welcome!";
   } else if (text.match(/(corona|covid|virus)/gi)) {
-    // If no match, check if message contains `coronavirus`
     product = coronavirus[Math.floor(Math.random() * coronavirus.length)];
   } else {
-    // If all else fails: random alternative
     product = alternative[Math.floor(Math.random() * alternative.length)];
   }
 
-  // Update DOM
+  // Update DOM with the input and bot's response
   addChat(input, product);
 }
 
@@ -52,12 +55,10 @@ function compare(promptsArray, repliesArray, string) {
         let replies = repliesArray[x];
         reply = replies[Math.floor(Math.random() * replies.length)];
         replyFound = true;
-        // Stop inner loop when input value matches prompts
         break;
       }
     }
     if (replyFound) {
-      // Stop outer loop when reply is found instead of interating through the entire array
       break;
     }
   }
@@ -91,7 +92,10 @@ function addChat(input, product) {
   setTimeout(() => {
     botText.innerText = `${product}`;
     textToSpeech(product)
-  }, 2000
-  )
+  }, 2000);
+}
 
+function textToSpeech(text) {
+  const msg = new SpeechSynthesisUtterance(text);
+  window.speechSynthesis.speak(msg);
 }
